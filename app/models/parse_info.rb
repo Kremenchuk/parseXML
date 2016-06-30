@@ -1,0 +1,2 @@
+class ParseInfo < ApplicationRecord
+end
