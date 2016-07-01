@@ -1,11 +1,21 @@
 class ParsexmlController < ApplicationController
-  require 'nokogiri'
+  #require 'nokogiri'
   def index
-    f = File.open('import.xml')
-    doc = Nokogiri::XML(f)
-    f.close
-    @parse = doc.at_xpath('//Классификатор//Ид')
-    @id_xml = @parse.to_s.sub('<Ид>','').sub('</Ид>','')
-    #ParseInfo.create! [id_xml: @id_xml]
+    parser()
   end
+
+
+  def parser
+    file = './importfile/import.xml'
+    xml_doc = Nokogiri::XML(File.open(file))
+    classifier_parse(xml_doc)
+  end
+
+  def classifier_parse(xml_doc)
+    #@parse = xml_doc.at_css('Классификатор')
+    Nokogiri::XML::SAX::Parser.new(Parser.new).parse(File.open('./importfile/import.xml'))
+  end
+
+
+
 end
