@@ -1,4 +1,4 @@
 class PaymentAccount < ApplicationRecord
-  has_one :bank
+  has_many :banks
   belongs_to :owner
 end

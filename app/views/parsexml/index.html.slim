@@ -1,55 +1,11 @@
 h1 Parse
-=@parse
-/p
-/=@new_owner.id_xml
-/p
-/=@new_owner.name
-/p
-/=@new_owner.official_name
-/p
-/=@new_owner.name_type
-/p
-/=@new_owner.comment
-/p
-/=@new_owner.address
-/p
-/=@new_owner.post_index
-/p
-/=@new_owner.country
-/p
-/=@new_owner.region
-/p
-/=@new_owner.area
-/p
-/=@new_owner.city
-/p
-/=@new_owner.street
-/p
-/=@new_owner.build
-/p
-/=@new_owner.housing
-/p
-/=@new_owner.flat
-/p
-/=@new_owner.inn
-/p
-/=@new_owner.kpp
-/p
-/=@new_owner.okpo
-p
-=@owner.inspect
-
-p
- h2
-   | Банк и банк кореспондент
-p
-=@new_bank.correspondent_account
-p
-=@new_bank.name
-p
-=@new_bank.address
-p
-  h2
-    | Банк кореспондент
-=@new_bank.correspondent_bank
-
+h2= "банки для расчетного счета #{@new_payment_account.payment_account}"
+-@new_payment_account.banks.each do |f|
+  p Наименование банка
+  =f.name
+  p Адрес
+  = f.address
+  p БИК
+  = f.bik
+  p Банк кореспондент
+  = f.corespondent_bank

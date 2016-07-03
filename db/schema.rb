@@ -10,12 +10,70 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160630164138) do
+ActiveRecord::Schema.define(version: 20160702134107) do
+
+  create_table "banks", force: :cascade do |t|
+    t.integer  "payment_account_id"
+    t.boolean  "corespondent_bank"
+    t.string   "name"
+    t.string   "correspondent_account"
+    t.string   "bik"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "classifiers", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.integer  "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "official_name"
+    t.string   "name_type"
+    t.string   "comment"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.string   "inn"
+    t.string   "kpp"
+    t.string   "okpo"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "parse_infos", force: :cascade do |t|
     t.string   "id_xml"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "payment_accounts", force: :cascade do |t|
+    t.string   "payment_account"
+    t.integer  "owner_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
 end

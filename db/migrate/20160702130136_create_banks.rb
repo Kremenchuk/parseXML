@@ -1,8 +1,8 @@
 class CreateBanks < ActiveRecord::Migration[5.0]
   def change
     create_table :banks do |t|
-      t.references :bank_master
       t.integer :payment_account_id
+      t.boolean :corespondent_bank
       t.string :name
       t.string :correspondent_account
       t.string :bik
