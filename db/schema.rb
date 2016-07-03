@@ -10,12 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701131710) do
+ActiveRecord::Schema.define(version: 20160630164138) do
 
-  create_table "classifiers", force: :cascade do |t|
+  create_table "parse_infos", force: :cascade do |t|
     t.string   "id_xml"
-    t.string   "name"
-    t.integer  "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
