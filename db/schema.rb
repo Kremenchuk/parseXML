@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704152945) do
+ActiveRecord::Schema.define(version: 20160704154505) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 20160704152945) do
     t.string   "flat"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "catals", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "changes"
+    t.integer  "owner_id"
+    t.integer  "classifier_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "classifiers", force: :cascade do |t|
@@ -56,16 +66,6 @@ ActiveRecord::Schema.define(version: 20160704152945) do
     t.integer  "property_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-  end
-
-  create_table "ml_catalogs", force: :cascade do |t|
-    t.string   "id_xml"
-    t.string   "name"
-    t.string   "changes"
-    t.integer  "owner_id"
-    t.integer  "classifier_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
   end
 
   create_table "owners", force: :cascade do |t|
