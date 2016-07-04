@@ -56,7 +56,7 @@ module ClassifierParser
     @new_payment_account = PaymentAccount.new
     @new_payment_account.owner = @new_ownner
     payment_accounts.each do |payment_account|
-      @new_payment_account.payment_account = payment_account.css('НомерСчета').text
+      @new_payment_account.payment_account = payment_account.at_css('НомерСчета').text
       @new_payment_account.save!
       if payment_account.css('Банк').text != ""
         parse_bank(payment_account.css('Банк'), false)
@@ -74,13 +74,13 @@ module ClassifierParser
     @new_bank = Bank.new
     @new_bank.payment_account = @new_payment_account
     @new_bank.corespondent_bank = corespondent_bank
-    @new_bank.name = bank.css('Наименование').text
-    @new_bank.correspondent_account = bank.css('СчетКорреспондентский').text
-    @new_bank.address = bank.css('Представление').text
+    @new_bank.name = bank.at_css('Наименование').text
+    @new_bank.correspondent_account = bank.at_css('СчетКорреспондентский').text
+    @new_bank.address = bank.at_css('Представление').text
     if bank.css('Адрес АдресноеПоле').text != ""
       parse_address(@new_bank, bank.css('Адрес АдресноеПоле'))
     end
-    @new_bank.bik = bank.css('БИК').text
+    @new_bank.bik = bank.at_css('БИК').text
     @new_bank.save!
   end
 
@@ -114,8 +114,8 @@ module ClassifierParser
   def parser_handbook(handbook_doc)
     handbook_doc.each do |handbook|
       @new_handbook = Handbook.new
-      @new_handbook.id_xml = handbook.css('ИдЗначения').text
-      @new_handbook.value = handbook.css('Значение').text
+      @new_handbook.id_xml = handbook.at_css('ИдЗначения').text
+      @new_handbook.value = handbook.at_css('Значение').text
       @new_property.handbooks << @new_handbook
     end
   end

@@ -1,9 +1,9 @@
-class CreateCatals < ActiveRecord::Migration[5.0]
+class CreateCatalogs < ActiveRecord::Migration[5.0]
   def change
-    create_table :catals do |t|
+    create_table :catalogs do |t|
       t.string :id_xml
       t.string :name
-      t.string :changes
+      t.string :only_change
       t.integer :owner_id
       t.integer :classifier_id
       t.timestamps
