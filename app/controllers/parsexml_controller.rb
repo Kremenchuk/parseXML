@@ -1,5 +1,8 @@
 class ParsexmlController < ApplicationController
-  include Parsers
+  include CommercemlParsers
+  include CatalogParser
+  include ClassifierParser
+  include AddressParser
   def index
     parser_xml()
   end

@@ -1,26 +1,24 @@
-module Parsers
-  def parser_xml
-    file1 = './importfile/import.xml'
-    #file1 = 'import.xml'
-    xml_doc = Nokogiri::XML(File.open(file1))
-    if xml_doc.css('Классификатор')
-      parse_classifier(xml_doc.css('Классификатор'))
-    end
-
-  end
-
-
+module ClassifierParser
   #разбираем Классификатор
 
   def parse_classifier(classifier_doc)
     @new_classifier = Classifier.new
     @new_classifier.id_xml = classifier_doc.at_css('Ид').text
     @new_classifier.name   = classifier_doc.at_css('Наименование').text
+
     if classifier_doc.css('Владелец').text != ""
       parse_owner(classifier_doc.css('Владелец'))
     end
-    @new_classifier.owner = @new_ownner
-    @new_classifier.save!
+
+    @new_ownner.classifiers << @new_classifier
+
+    if classifier_doc.css('Группы').text != ""
+      parse_group(classifier_doc.css('Группы'))
+    end
+
+    if classifier_doc.css('Свойства').text != ""
+      parse_property(classifier_doc.css('Свойства'))
+    end
   end
 
 
@@ -48,7 +46,7 @@ module Parsers
     if owner_doc.css('РасчетныеСчета').text != ""
       parse_payment_account(owner_doc.css('РасчетныеСчета'))
     end
-
+    return @new_ownner
   end
 
 
@@ -87,34 +85,38 @@ module Parsers
   end
 
 
-  #парсим адрес если встречаем 'АдресноеПоле'
+  #Парсим группы
 
-  def parse_address(object, address_fields)
-    address_fields.each do |address_field|
-      case address_field.css('Тип').text
-        when 'Почтовый индекс'
-          object.post_index = address_field.css('Значение').text
-        when 'Страна'
-          object.country = address_field.css('Значение').text
-        when 'Регион'
-          object.region = address_field.css('Значение').text
-        when 'Район'
-          object.area = address_field.css('Значение').text
-        when 'Населенный пункт'
-          object.city = address_field.css('Значение').text
-        when 'Город'
-          object.city = address_field.css('Значение').text
-        when 'Улица'
-          object.street = address_field.css('Значение').text
-        when 'Дом'
-          object.build = address_field.css('Значение').text
-        when 'Корпус'
-          object.housing = address_field.css('Значение').text
-        when 'Квартира'
-          object.flat = address_field.css('Значение').text
+  def parse_group(group_doc)
+    Nokogiri::XML::SAX::Parser.new(Parser.new).parse(group_doc.to_xml)
+  end
+
+
+  #Парсим свойства классификатора
+
+  def parse_property(property_doc)
+    property_doc.css('Свойство').each do |property|
+      @new_property             = Property.new
+      @new_property.id_xml      = property.at_css('Ид').text
+      @new_property.name        = property.at_css('Наименование').text
+      @new_property.value       = property.at_css('ТипЗначений').text
+      @new_property.for_product = property.at_css('ДляТоваров').text
+      @new_classifier.properties << @new_property
+      if property.css('Справочник').text != ""
+        parser_handbook(property.css('Справочник'))
       end
     end
   end
 
 
+  #парсим справочники
+
+  def parser_handbook(handbook_doc)
+    handbook_doc.each do |handbook|
+      @new_handbook = Handbook.new
+      @new_handbook.id_xml = handbook.css('ИдЗначения').text
+      @new_handbook.value = handbook.css('Значение').text
+      @new_property.handbooks << @new_handbook
+    end
+  end
 end

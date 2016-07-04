@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160702134107) do
+ActiveRecord::Schema.define(version: 20160704152945) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -40,6 +40,34 @@ ActiveRecord::Schema.define(version: 20160702134107) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.integer  "classifier_id"
+    t.integer  "groupable_id"
+    t.string   "groupable_type"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "handbooks", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "value"
+    t.integer  "property_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "ml_catalogs", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "changes"
+    t.integer  "owner_id"
+    t.integer  "classifier_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "owners", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
@@ -63,17 +91,21 @@ ActiveRecord::Schema.define(version: 20160702134107) do
     t.datetime "updated_at",    null: false
   end
 
-  create_table "parse_infos", force: :cascade do |t|
-    t.string   "id_xml"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "payment_accounts", force: :cascade do |t|
     t.string   "payment_account"
     t.integer  "owner_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "properties", force: :cascade do |t|
+    t.integer  "classifier_id"
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "value"
+    t.string   "for_product"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
 end
