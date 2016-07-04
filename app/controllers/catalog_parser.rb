@@ -1,4 +1,5 @@
 module CatalogParser
+
   def parse_catalog(catalog_doc)
     catalog_doc.each do |catalog|
       @new_catalog = MlCatalog.new
@@ -16,4 +17,5 @@ module CatalogParser
       owner.catalogs << @new_catalog
     end
   end
+
 end

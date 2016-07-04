@@ -8,9 +8,14 @@ module CommercemlParsers
     #if xml_doc.css('Классификатор').text != ""
     #  parse_classifier(xml_doc.css('Классификатор'))
     #end
-    if xml_doc.css('Каталог').text != ""
-      parse_catalog(xml_doc.css('Каталог'))
-    end
+    @new_owner = Owner.new
+
+    @new_catalog = MlCatalog.new
+    a=2
+
+    #if xml_doc.css('Каталог').text != ""
+    #  parse_catalog(xml_doc.css('Каталог'))
+    #end
   end
 
 
