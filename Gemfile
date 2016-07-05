@@ -34,6 +34,10 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'railroady'
+  gem 'rails_admin', github: 'sferik/rails_admin'
+  gem 'rack-pjax', github: 'afcapel/rack-pjax'
+  gem 'remotipart', github: 'mshibuya/remotipart', ref: '3a6acb3'
 end
 
 group :development do

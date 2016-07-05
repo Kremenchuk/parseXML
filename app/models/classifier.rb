@@ -3,4 +3,5 @@ class Classifier < ApplicationRecord
   has_many :groups, as: :groupable, dependent: :destroy
   has_many :properties
   has_many :catalogs
+  has_many :offers
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704171736) do
+ActiveRecord::Schema.define(version: 20160705120003) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -42,6 +42,16 @@ ActiveRecord::Schema.define(version: 20160704171736) do
     t.datetime "updated_at",    null: false
   end
 
+  create_table "catals", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "changes"
+    t.integer  "owner_id"
+    t.integer  "classifier_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "classifiers", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
@@ -60,12 +70,32 @@ ActiveRecord::Schema.define(version: 20160704171736) do
     t.datetime "updated_at",     null: false
   end
 
+  create_table "groups_products", id: false, force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "product_id"
+  end
+
   create_table "handbooks", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "value"
     t.integer  "property_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "handbooks_products", id: false, force: :cascade do |t|
+    t.integer "handbook_id"
+    t.integer "product_id"
+  end
+
+  create_table "offers", force: :cascade do |t|
+    t.string   "only_change"
+    t.string   "id_xml"
+    t.integer  "classifier_id"
+    t.integer  "catalog_id"
+    t.integer  "owner_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "owners", force: :cascade do |t|
@@ -91,17 +121,84 @@ ActiveRecord::Schema.define(version: 20160704171736) do
     t.datetime "updated_at",    null: false
   end
 
-  create_table "parse_infos", force: :cascade do |t|
-    t.string   "id_xml"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "payment_accounts", force: :cascade do |t|
     t.string   "payment_account"
     t.integer  "owner_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "price_types", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "currency"
+    t.string   "into_amount"
+    t.integer  "tax_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "prices", force: :cascade do |t|
+    t.string   "presentation"
+    t.string   "price"
+    t.string   "coefficient"
+    t.string   "currency"
+    t.integer  "proposal_id"
+    t.integer  "price_type_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "product_attribute_values", force: :cascade do |t|
+    t.integer  "attribute_id"
+    t.string   "value"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "product_attributes", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_attributes_products", id: false, force: :cascade do |t|
+    t.integer "attribute_id"
+    t.integer "product_id"
+  end
+
+  create_table "product_images", force: :cascade do |t|
+    t.string   "link_image"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_properties", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "property_id"
+    t.string   "value"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "product_tax_values", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "tax_id"
+    t.string  "value"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "barcode"
+    t.string   "vendorcode"
+    t.string   "name"
+    t.string   "type_product"
+    t.string   "type_nomenclature"
+    t.integer  "catalog_id"
+    t.integer  "unit_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "properties", force: :cascade do |t|
@@ -112,6 +209,51 @@ ActiveRecord::Schema.define(version: 20160704171736) do
     t.string   "for_product"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "proposals", force: :cascade do |t|
+    t.integer  "product_id"
+    t.string   "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "proposals_storages", force: :cascade do |t|
+    t.string   "quantity"
+    t.integer  "proposal_id"
+    t.integer  "storage_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "requisites", force: :cascade do |t|
+    t.string   "name"
+    t.string   "value"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "storages", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "taxes", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.string   "full_name"
+    t.string   "intern_cut"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

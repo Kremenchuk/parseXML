@@ -1931,6 +1931,7 @@
 					<Ид>260</Ид>
 				</Группы>
 				<Картинка>import_files/55/5590c833-e4c0-11e2-9526-00163c2d0dbf_87187921-e4c0-11e2-9526-00163c2d0dbf.jpeg</Картинка>
+				<Картинка>import_files/11/5590c833-e4c0-11e2-9526-00163c2d0dbf_87187921-e4c0-11e2-9526-00163c2d0dbf.jpeg</Картинка>
 				<ЗначенияСвойств>
 					<ЗначенияСвойства>
 						<Ид>126</Ид>
@@ -9905,7 +9906,8 @@
 				<ЗначенияРеквизитов>
 					<ЗначениеРеквизита>
 						<Наименование>ОписаниеВФорматеHTML</Наименование>
-						<Значение>a:2:{s:4:"TEXT";s:753:"&lt;div style="text-align: justify; "&gt; 
+						<Значение>a:2:{s:4:"TEXT";s:753:"&lt;div style="text-align: justify; "&gt; 
+
  &lt;/div&gt;
  
 &lt;div style="text-align: justify; "&gt;Ім&amp;lsquo;я Івана Петровича Котляревського (1769-1838), засновника нової української літератури, пов‘язують, у першу чергу, з його поемою &amp;laquo;Енеїда&amp;raquo; (1798), яка вже більше 200 років зачаровує читачів. Це була перша друкована українська книга, написана народною мовою, перша національна поема. Запозичивши сюжет античної поеми Вергілія, Котляревський наповнив цей твір дотепним українським гумором, повір‘ями, звичаями, картинами воєнного і мирного життя, описом одягу, страв...&lt;/div&gt;
@@ -12763,7 +12765,8 @@
 				<ЗначенияРеквизитов>
 					<ЗначениеРеквизита>
 						<Наименование>ОписаниеВФорматеHTML</Наименование>
-						<Значение>&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; text-align: justify; line-height: normal; "&gt;&lt;font class="Apple-style-span" size="2"&gt;&lt;i&gt;&lt;span style="color: black; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; background-position: initial initial; background-repeat: initial initial; "&gt;&amp;ldquo;Цей диск присвячую своєму батькові - Власюку Івану Семеновичу, з розповідей і казок якого все і почалося&amp;rdquo;.&lt;/span&gt;&lt;/i&gt;&lt;span style="color: black; "&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
+						<Значение>
+&lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; text-align: justify; line-height: normal; "&gt;&lt;font class="Apple-style-span" size="2"&gt;&lt;i&gt;&lt;span style="color: black; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; background-position: initial initial; background-repeat: initial initial; "&gt;&amp;ldquo;Цей диск присвячую своєму батькові - Власюку Івану Семеновичу, з розповідей і казок якого все і почалося&amp;rdquo;.&lt;/span&gt;&lt;/i&gt;&lt;span style="color: black; "&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
  
 &lt;p class="MsoNormal" style="margin-bottom: 0.0001pt; text-align: justify; line-height: normal; "&gt;&lt;font class="Apple-style-span" size="2"&gt;&lt;i&gt;&lt;span style="color: black; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; background-position: initial initial; background-repeat: initial initial; "&gt;Для діток маленьких, для старшечких і для дорослих. &lt;/span&gt;&lt;/i&gt;&lt;i&gt;&lt;span lang="EN-US" style="color: black; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: white; background-position: initial initial; background-repeat: initial initial; "&gt;Слухайте на здоров'я!&lt;/span&gt;&lt;/i&gt;&lt;span lang="EN-US" style="color: black; "&gt;&lt;o:p&gt;&lt;/o:p&gt;&lt;/span&gt;&lt;/font&gt;&lt;/p&gt;
  
