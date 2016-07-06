@@ -1,7 +1,7 @@
 module ClassifierParser
   #разбираем Классификатор
 
-  def parse_classifier(classifier_doc)
+  def parse_classifier(classifier_doc, commerce_information)
     @new_classifier             = Classifier.new
     @new_classifier.id_xml      = classifier_doc.at_css('Ид').text
     @new_classifier.name        = classifier_doc.at_css('Наименование').text
@@ -11,6 +11,7 @@ module ClassifierParser
     end
 
     @new_ownner.classifiers << @new_classifier
+    commerce_information.classifiers << @new_classifier
 
     if classifier_doc.css('Группы').text != ""
       parse_group(classifier_doc.css('Группы'))

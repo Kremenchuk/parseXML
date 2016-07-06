@@ -1,6 +1,6 @@
 module CatalogParser
 
-  def parse_catalog(catalog_doc)
+  def parse_catalog(catalog_doc, commerce_information)
     @new_catalog = Catalog.new
     @new_catalog.id_xml = catalog_doc.at_css('Ид').text
     @new_catalog.name = catalog_doc.at_css('Наименование').text
@@ -14,6 +14,8 @@ module CatalogParser
       owner = parse_owner(catalog_doc.at_css('Владелец'))
     end
     owner.catalogs << @new_catalog
+    commerce_information.catalogs << @new_catalog
+
     parse_product(catalog_doc.css('Товары'))
   end
 

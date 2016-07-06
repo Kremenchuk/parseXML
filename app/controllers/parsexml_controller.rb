@@ -7,5 +7,6 @@ class ParsexmlController < ApplicationController
 
   def index
     parser_xml()
+    create_xml()
   end
 end

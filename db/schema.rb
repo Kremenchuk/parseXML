@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706085826) do
+ActiveRecord::Schema.define(version: 20160706150414) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -38,8 +38,9 @@ ActiveRecord::Schema.define(version: 20160706085826) do
     t.string   "only_change"
     t.integer  "owner_id"
     t.integer  "classifier_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "catals", force: :cascade do |t|
@@ -57,8 +58,16 @@ ActiveRecord::Schema.define(version: 20160706085826) do
     t.string   "name"
     t.string   "only_change"
     t.integer  "owner_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "commerce_informations", force: :cascade do |t|
+    t.string   "version"
+    t.string   "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -98,8 +107,9 @@ ActiveRecord::Schema.define(version: 20160706085826) do
     t.integer  "classifier_id"
     t.integer  "catalog_id"
     t.integer  "owner_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "owners", force: :cascade do |t|

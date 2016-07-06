@@ -1,6 +1,6 @@
 module OffersParser
 
-  def parse_offer(offer_doc)
+  def parse_offer(offer_doc, commerce_information)
     @new_offer = Offer.new
     @new_offer.schema_version = offer_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
     @new_offer.data           = offer_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
@@ -17,6 +17,7 @@ module OffersParser
     catalog.offers << @new_offer
     classifier.offers << @new_offer
     owner.offers << @new_offer
+    commerce_information.offers << @new_offer
 
     if offer_doc.css('ТипыЦен')
       parse_price_type(offer_doc.css('ТипыЦен'))

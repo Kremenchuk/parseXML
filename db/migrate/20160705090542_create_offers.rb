@@ -9,6 +9,7 @@ class CreateOffers < ActiveRecord::Migration[5.0]
       t.integer :classifier_id
       t.integer :catalog_id
       t.integer :owner_id
+      t.integer :commerce_information_id
       t.timestamps
     end
   end

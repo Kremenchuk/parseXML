@@ -6,6 +6,7 @@ class CreateCatalogs < ActiveRecord::Migration[5.0]
       t.string :only_change
       t.integer :owner_id
       t.integer :classifier_id
+      t.integer :commerce_information_id
       t.timestamps
     end
   end
