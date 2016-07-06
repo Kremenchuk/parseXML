@@ -4,8 +4,7 @@ class CreatePriceTypes < ActiveRecord::Migration[5.0]
       t.string :id_xml
       t.string :name
       t.string :currency
-      t.string :into_amount
-      t.integer :tax_id
+      t.integer :offer_id
       t.timestamps
     end
   end

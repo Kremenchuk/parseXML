@@ -3,15 +3,21 @@ class Product < ApplicationRecord
   belongs_to :catalog
   has_and_belongs_to_many :groups
 
+  #properties
   has_many :product_properties
   has_many :properties, through: :product_properties
 
+  #tax
   has_many :product_tax_values
   has_many :taxes, through: :product_tax_values
 
-  has_many :requisites
+  #requisite
+  has_many :product_requisites
+  has_many :requisites, through: :product_requisites
 
-  #has_and_belongs_to_many :product_attributes
+  #attribute
+  has_many :product_attribute_values
+  has_many :product_attributes, through: :product_attribute_values
 
   has_many :proposals
   has_many :product_images

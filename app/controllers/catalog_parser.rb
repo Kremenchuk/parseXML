@@ -56,18 +56,26 @@ module CatalogParser
         end
       end
       @new_catalog.products << @new_product
-=begin
+
       #парсим свойства товара
         if product.css('ЗначенияСвойств')
           parse_product_property(product.css('ЗначенияСвойств'))
         end
-=end
 
       #парсим СтавкиНалогов товара
-      if product.css('СтавкиНалогов')
-        parse_taxes(product.css('СтавкиНалогов'))
-      end
+        if product.css('СтавкиНалогов')
+          parse_taxes(product.css('СтавкиНалогов'))
+        end
 
+      #парсим ХарактеристикиТовара товара
+        if product.css('ХарактеристикиТовара')
+          parse_attributes(product.css('ХарактеристикиТовара'))
+        end
+
+      #парсим ЗначенияРеквизитов товара
+        if product.css('ЗначенияРеквизитов')
+          parse_requisite(product.css('ЗначенияРеквизитов'))
+        end
 
 
     end
@@ -77,15 +85,21 @@ module CatalogParser
   #парсим ед.измерения
 
   def parse_unit(unit_doc)
-    @new_unit = Unit.new
-    @new_unit.name       = unit_doc.text
-    @new_unit.code       = unit_doc['Код']
-    @new_unit.full_name  = unit_doc['НаименованиеПолное']
-    if unit_doc['МеждународноеСокращение']
-      @new_unit.intern_cut = unit_doc['МеждународноеСокращение']
+
+    unit = Unit.find_by(code: unit_doc['Код'])
+    if unit
+      return unit
+    else
+      @new_unit = Unit.new
+      @new_unit.name       = unit_doc.text
+      @new_unit.code       = unit_doc['Код']
+      @new_unit.full_name  = unit_doc['НаименованиеПолное']
+      if unit_doc['МеждународноеСокращение']
+        @new_unit.intern_cut = unit_doc['МеждународноеСокращение']
+      end
+      @new_unit.save!
+      return @new_unit
     end
-    @new_unit.save!
-    return @new_unit
   end
 
 
@@ -133,6 +147,7 @@ module CatalogParser
         insert_new_product_tax_value(tax.at_css('Ставка').text, @new_tax)
       end
     end
+    return @new_tax
   end
 
   def insert_new_product_tax_value(value, product_tax)
@@ -142,6 +157,61 @@ module CatalogParser
     @new_product_tax_value.value   = value
     @new_product_tax_value.save!
   end
+
+
+  #парсим характеристики товара
+
+  def parse_attributes(attributes_doc)
+    attributes_doc.css('ХарактеристикаТовара').each do |attribute|
+      product_attribute = ProductAttribute.find_by(name: attribute.at_css('Наименование').text)
+      if product_attribute
+        insert_new_product_attribute_value(attribute.at_css('Значение').text, product_attribute)
+      else
+        @new_product_attribute      = ProductAttribute.new
+        @new_product_attribute.name = attribute.at_css('Наименование').text
+        @new_product_attribute.save!
+        insert_new_product_attribute_value(attribute.at_css('Значение').text, @new_product_attribute)
+      end
+    end
+  end
+
+  def insert_new_product_attribute_value(value, product_attribute)
+    @new_product_attribute_value                   = ProductAttributeValue.new
+    @new_product_attribute_value.product_attribute = product_attribute
+    @new_product_attribute_value.product           = @new_product
+    @new_product_attribute_value.value             = value
+    @new_product_attribute_value.save!
+  end
+
+
+
+
+
+
+  #парсим реквизиты товара
+
+  def parse_requisite(requisite_doc)
+    requisite_doc.css('ЗначениеРеквизита').each do |requisite|
+      product_requisite = Requisite.find_by(name: requisite.at_css('Наименование').text)
+      if product_requisite
+        insert_new_product_requisite_value(requisite.at_css('Значение').text, product_requisite)
+      else
+        @new_requisite = Requisite.new
+        @new_requisite.name = requisite.at_css('Наименование').text
+        @new_requisite.save!
+        insert_new_product_requisite_value(requisite.at_css('Значение').text, @new_requisite)
+      end
+    end
+  end
+
+  def insert_new_product_requisite_value(value, product_requisite)
+    @new_product_requisite_value           = ProductRequisite.new
+    @new_product_requisite_value.product   = @new_product
+    @new_product_requisite_value.requisite = product_requisite
+    @new_product_requisite_value.value = value
+    @new_product_requisite_value.save!
+  end
+
 
 
 end

@@ -2,10 +2,10 @@ module ClassifierParser
   #разбираем Классификатор
 
   def parse_classifier(classifier_doc)
-    @new_classifier = Classifier.new
-    @new_classifier.id_xml = classifier_doc.at_css('Ид').text
-    @new_classifier.name   = classifier_doc.at_css('Наименование').text
-
+    @new_classifier             = Classifier.new
+    @new_classifier.id_xml      = classifier_doc.at_css('Ид').text
+    @new_classifier.name        = classifier_doc.at_css('Наименование').text
+    @new_classifier.only_change = classifier_doc.css('Классификатор')[0]['СодержитТолькоИзменения']
     if classifier_doc.css('Владелец').text != ""
       parse_owner(classifier_doc.css('Владелец'))
     end

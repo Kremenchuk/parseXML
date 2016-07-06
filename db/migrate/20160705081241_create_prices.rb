@@ -5,6 +5,7 @@ class CreatePrices < ActiveRecord::Migration[5.0]
       t.string :price
       t.string :coefficient
       t.string :currency
+      t.string :unit
       t.integer :proposal_id
       t.integer :price_type_id
       t.timestamps

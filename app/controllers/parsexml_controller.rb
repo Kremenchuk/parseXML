@@ -3,7 +3,7 @@ class ParsexmlController < ApplicationController
   include CatalogParser
   include ClassifierParser
   include AddressParser
-
+  include OffersParser
 
   def index
     parser_xml()

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160705120003) do
+ActiveRecord::Schema.define(version: 20160706085826) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -55,9 +55,10 @@ ActiveRecord::Schema.define(version: 20160705120003) do
   create_table "classifiers", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
+    t.string   "only_change"
     t.integer  "owner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -89,13 +90,16 @@ ActiveRecord::Schema.define(version: 20160705120003) do
   end
 
   create_table "offers", force: :cascade do |t|
+    t.string   "schema_version"
+    t.string   "data"
     t.string   "only_change"
     t.string   "id_xml"
+    t.string   "name"
     t.integer  "classifier_id"
     t.integer  "catalog_id"
     t.integer  "owner_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "owners", force: :cascade do |t|
@@ -128,14 +132,21 @@ ActiveRecord::Schema.define(version: 20160705120003) do
     t.datetime "updated_at",      null: false
   end
 
+  create_table "price_type_tax_values", force: :cascade do |t|
+    t.integer  "price_type_id"
+    t.integer  "tax_id"
+    t.string   "value"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "price_types", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
     t.string   "currency"
-    t.string   "into_amount"
-    t.integer  "tax_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "offer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "prices", force: :cascade do |t|
@@ -143,6 +154,7 @@ ActiveRecord::Schema.define(version: 20160705120003) do
     t.string   "price"
     t.string   "coefficient"
     t.string   "currency"
+    t.string   "unit"
     t.integer  "proposal_id"
     t.integer  "price_type_id"
     t.datetime "created_at",    null: false
@@ -150,10 +162,11 @@ ActiveRecord::Schema.define(version: 20160705120003) do
   end
 
   create_table "product_attribute_values", force: :cascade do |t|
-    t.integer  "attribute_id"
+    t.integer  "product_attribute_id"
+    t.integer  "product_id"
     t.string   "value"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "product_attributes", force: :cascade do |t|
@@ -163,7 +176,7 @@ ActiveRecord::Schema.define(version: 20160705120003) do
   end
 
   create_table "product_attributes_products", id: false, force: :cascade do |t|
-    t.integer "attribute_id"
+    t.integer "product_attribute_id"
     t.integer "product_id"
   end
 
@@ -180,6 +193,14 @@ ActiveRecord::Schema.define(version: 20160705120003) do
     t.string   "value"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "product_requisites", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "requisite_id"
+    t.string   "value"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "product_tax_values", force: :cascade do |t|
@@ -228,8 +249,6 @@ ActiveRecord::Schema.define(version: 20160705120003) do
 
   create_table "requisites", force: :cascade do |t|
     t.string   "name"
-    t.string   "value"
-    t.integer  "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
