@@ -1,4 +1,5 @@
 module AddAddress
+
   def add_address_fields(object, node_master, doc)
     node_address_field = Nokogiri::XML::Node.new('АдресноеПоле', doc)
     node_type          = Nokogiri::XML::Node.new('Тип', doc)

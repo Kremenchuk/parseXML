@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160707135300) do
+ActiveRecord::Schema.define(version: 20160707083355) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -38,26 +38,24 @@ ActiveRecord::Schema.define(version: 20160707135300) do
     t.string   "only_change"
     t.integer  "owner_id"
     t.integer  "classifier_id"
-    t.integer  "commerce_information_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "classifiers", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
-    t.string   "only_change"
     t.integer  "owner_id"
-    t.integer  "commerce_information_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "commerce_informations", force: :cascade do |t|
+    t.string   "name_document"
     t.string   "version"
     t.string   "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -220,6 +218,12 @@ ActiveRecord::Schema.define(version: 20160707135300) do
     t.string   "okpo"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "parse_infos", force: :cascade do |t|
+    t.string   "id_xml"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "payment_accounts", force: :cascade do |t|

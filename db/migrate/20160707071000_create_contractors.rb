@@ -3,7 +3,7 @@ class CreateContractors < ActiveRecord::Migration[5.0]
     create_table :contractors do |t|
       t.string :id_xml
       t.string :name
-      t.string :contact
+      t.string :role
       t.string :address
       t.string :post_index
       t.string :country
