@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160706150414) do
+ActiveRecord::Schema.define(version: 20160707135300) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -43,16 +43,6 @@ ActiveRecord::Schema.define(version: 20160706150414) do
     t.datetime "updated_at",              null: false
   end
 
-  create_table "catals", force: :cascade do |t|
-    t.string   "id_xml"
-    t.string   "name"
-    t.string   "changes"
-    t.integer  "owner_id"
-    t.integer  "classifier_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
   create_table "classifiers", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
@@ -68,6 +58,74 @@ ActiveRecord::Schema.define(version: 20160706150414) do
     t.string   "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string   "contact_type"
+    t.string   "value"
+    t.string   "comment"
+    t.integer  "contactable_id"
+    t.string   "contactable_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "contractors", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "role"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.integer  "personable_id"
+    t.string   "personable_type"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "contractors_documents", id: false, force: :cascade do |t|
+    t.integer "contractor_id"
+    t.integer "document_id"
+  end
+
+  create_table "document_requisites", force: :cascade do |t|
+    t.integer  "document_id"
+    t.integer  "requisite_id"
+    t.string   "value"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "number"
+    t.string   "date"
+    t.string   "economic_op"
+    t.string   "role"
+    t.string   "currency"
+    t.string   "course"
+    t.string   "sum"
+    t.string   "time"
+    t.string   "comment"
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "documents_products", force: :cascade do |t|
+    t.integer  "document_id"
+    t.integer  "product_id"
+    t.string   "quantity"
+    t.string   "sum"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -98,9 +156,38 @@ ActiveRecord::Schema.define(version: 20160706150414) do
     t.integer "product_id"
   end
 
+  create_table "identity_cards", force: :cascade do |t|
+    t.string   "type_document"
+    t.string   "series"
+    t.string   "number"
+    t.string   "issue_date"
+    t.string   "issued_by"
+    t.integer  "physical_persone"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "legal_entities", force: :cascade do |t|
+    t.string   "official_name"
+    t.string   "inn"
+    t.string   "kpp"
+    t.string   "egrpo"
+    t.string   "okpo"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "offers", force: :cascade do |t|
-    t.string   "schema_version"
-    t.string   "data"
     t.string   "only_change"
     t.string   "id_xml"
     t.string   "name"
@@ -140,6 +227,30 @@ ActiveRecord::Schema.define(version: 20160706150414) do
     t.integer  "owner_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "physical_persones", force: :cascade do |t|
+    t.string   "full_name"
+    t.string   "appeal"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "patronymic"
+    t.string   "date_birth"
+    t.string   "inn"
+    t.string   "kpp"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.integer  "identity_card_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "price_type_tax_values", force: :cascade do |t|
@@ -255,6 +366,25 @@ ActiveRecord::Schema.define(version: 20160706150414) do
     t.integer  "storage_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "representatives", force: :cascade do |t|
+    t.string   "id_xml"
+    t.string   "name"
+    t.string   "relation"
+    t.string   "address"
+    t.string   "post_index"
+    t.string   "country"
+    t.string   "region"
+    t.string   "area"
+    t.string   "city"
+    t.string   "street"
+    t.string   "build"
+    t.string   "housing"
+    t.string   "flat"
+    t.integer  "contractor_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "requisites", force: :cascade do |t|

@@ -4,9 +4,10 @@ class ParsexmlController < ApplicationController
   include ClassifierParser
   include AddressParser
   include OffersParser
+  included AddAddress
 
   def index
-    parser_xml()
+    #parser_xml()
     create_xml()
   end
 end

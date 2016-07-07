@@ -2,8 +2,8 @@ module OffersParser
 
   def parse_offer(offer_doc, commerce_information)
     @new_offer = Offer.new
-    @new_offer.schema_version = offer_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
-    @new_offer.data           = offer_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
+    #@new_offer.schema_version = offer_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
+    #@new_offer.data           = offer_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
     offer_doc                 = offer_doc.css('ПакетПредложений')
     @new_offer.only_change    = offer_doc.css('ПакетПредложений')[0]['СодержитТолькоИзменения']
     @new_offer.id_xml         = offer_doc.at_css('Ид').text
