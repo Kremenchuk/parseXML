@@ -6,7 +6,7 @@ class CreateIdentityCards < ActiveRecord::Migration[5.0]
       t.string :number
       t.string :issue_date
       t.string :issued_by
-      t.integer :physical_persone
+      t.integer :physical_persone_id
       t.timestamps
     end
   end

@@ -3,16 +3,16 @@ module ToErpOrder
 
   def create_to_erp_order(doc)
 
-
-    @commerce_infor = CommerceMLConvert.last
+    @commerce_infor = CommerceInformation.find_by(name_document: "from_ERP_order")
     @doc = Nokogiri::XML('to.xml')
+
+    node_commerce_inf = Nokogiri::XML::Node.new('КоммерческаяИнформация', @doc)
+    node_commerce_inf['ВерсияСхемы'] = "#{@commerce_infor.version}"
+    node_commerce_inf['ДатаФормирования'] = "#{@commerce_infor.date}"
+    @doc.root = node_commerce_inf
 
     @commerce_infor.documents.each do |document|
 
-      node_commerce_inf = Nokogiri::XML::Node.new('КоммерческаяИнформация', @doc)
-      node_commerce_inf['ВерсияСхемы'] = "#{@commerce_infor.version}"
-      node_commerce_inf['ДатаФормирования'] = "#{@commerce_infor.date}"
-      @doc.root = node_commerce_inf
       node_document = Nokogiri::XML::Node.new('Документ', @doc)
       node_commerce_inf.add_child node_document
 
@@ -56,11 +56,14 @@ module ToErpOrder
       node_time = Nokogiri::XML::Node.new('Время', @doc)
       node_time.content = "#{document.time}"
       node_document.add_child node_time
+      a=22
 
+      File.write(doc, @doc.to_xml)
     end
 
-    File.write(doc, @doc.to_xml)
+    doc.close
   end
+
 
 
   #добавляем контрагентова для документа
@@ -74,7 +77,7 @@ module ToErpOrder
       node_id.content = "#{contractor.id_xml}"
       node_contractor.add_child node_id
 
-      node_name = Nokogiri::XML::Node.new('Ид', @doc)
+      node_name = Nokogiri::XML::Node.new('Наименование', @doc)
       node_name.content = "#{contractor.name}"
       node_contractor.add_child node_name
 
@@ -83,9 +86,9 @@ module ToErpOrder
       node_contractor.add_child node_role
 
       if contractor.personable_type == "LegalEntity"
-        add_legal_entity(contractor.personable_id, master_node)
+        add_legal_entity(contractor.personable_id, node_contractor)
       else
-        add_physical_persone(contractor.personable_id, master_node)
+        add_physical_persone(contractor.personable_id, node_contractor)
       end
     end
   end
@@ -94,6 +97,8 @@ module ToErpOrder
   #добавляем реквизити юр. лица если покупатель юр. лицо
 
   def add_legal_entity(legal_entity, master_node)
+    legal_entity = LegalEntity.find(legal_entity)
+
     node_official_name = Nokogiri::XML::Node.new('ОфициальноеНаименование', @doc)
     node_official_name.content = "#{legal_entity.official_name}"
     master_node.add_child node_official_name
@@ -132,23 +137,125 @@ module ToErpOrder
 
       add_address_fields(legal_entity, node_legal_address, @doc)
     end
+  end
 
+
+    #добавляем физических лиц
+
+  def add_physical_persone(physical_persone, master_node)
+    physical_persone = PhysicalPersone.find(physical_persone)
+
+    node_full_name = Nokogiri::XML::Node.new('ПолноеНаименование', @doc)
+    node_full_name.content = "#{physical_persone.full_name}"
+    master_node.add_child node_full_name
+
+    if physical_persone.appeal
+      node_appeal = Nokogiri::XML::Node.new('Обращение', @doc)
+      node_appeal.content = "#{physical_persone.appeal}"
+      master_node.add_child node_appeal
+    end
+
+    if physical_persone.last_name
+      node_last_name = Nokogiri::XML::Node.new('Фамилия', @doc)
+      node_last_name.content = "#{physical_persone.last_name}"
+      master_node.add_child node_last_name
+    end
+
+    if physical_persone.first_name
+      node_first_name = Nokogiri::XML::Node.new('Имя', @doc)
+      node_first_name.content = "#{physical_persone.first_name}"
+      master_node.add_child node_first_name
+    end
+
+    if physical_persone.patronymic
+      node_patronymic = Nokogiri::XML::Node.new('Отчество', @doc)
+      node_patronymic.content = "#{physical_persone.patronymic}"
+      master_node.add_child node_patronymic
+    end
+
+    if physical_persone.date_birth
+      node_date_birth = Nokogiri::XML::Node.new('ДатаРождения', @doc)
+      node_date_birth.content = "#{physical_persone.date_birth}"
+      master_node.add_child node_date_birth
+    end
+
+    if physical_persone.inn
+      node_inn = Nokogiri::XML::Node.new('ИНН', @doc)
+      node_inn.content = "#{physical_persone.inn}"
+      master_node.add_child node_inn
+    end
+
+    if physical_persone.kpp
+      node_kpp = Nokogiri::XML::Node.new('ДатаРождения', @doc)
+      node_kpp.content = "#{physical_persone.kpp}"
+      master_node.add_child node_kpp
+    end
+
+    if physical_persone.identity_card_id
+      node_identity_card = Nokogiri::XML::Node.new('УдостоверениеЛичности', @doc)
+      master_node.add_child node_identity_card
+
+      add_identity_card(physical_persone, node_identity_card)
+    end
+
+
+    if physical_persone.address
+      node_physical_address = Nokogiri::XML::Node.new('АдресРегистрации', @doc)
+      master_node.add_child node_physical_address
+
+      node_address = Nokogiri::XML::Node.new('Представление', @doc)
+      node_address.content = "#{physical_persone.address}"
+      node_physical_address.add_child node_address
+
+      add_address_fields(physical_persone, node_physical_address, @doc)
+    end
+  end
+
+
+  #Идентификационная карта
+
+  def add_identity_card(physical_persone, master_node)
+    if physical_persone.identity_card.type_document
+      node_type_document = Nokogiri::XML::Node.new('ВидДокумента', @doc)
+      node_type_document.content = "#{physical_persone.identity_card.type_document}"
+      master_node.add_child node_type_document
+    end
+
+    if physical_persone.identity_card.series
+      node_series = Nokogiri::XML::Node.new('Серия', @doc)
+      node_series.content = "#{physical_persone.identity_card.series}"
+      master_node.add_child node_series
+    end
+
+    if physical_persone.identity_card.number
+      node_number = Nokogiri::XML::Node.new('Номер', @doc)
+      node_number.content = "#{physical_persone.identity_card.number}"
+      master_node.add_child node_number
+    end
+
+    if physical_persone.identity_card.issue_date
+      node_issue_date = Nokogiri::XML::Node.new('ДатаВыдачи', @doc)
+      node_issue_date.content = "#{physical_persone.identity_card.issue_date}"
+      master_node.add_child node_issue_date
+    end
+
+    if physical_persone.identity_card.issued_by
+      node_issued_by = Nokogiri::XML::Node.new('КемВыдан', @doc)
+      node_issued_by.content = "#{physical_persone.identity_card.issued_by}"
+      master_node.add_child node_issued_by
+    end
   end
 
 
 
-
-
-
-
-  # def to_my_xml(options = {})
-  #   require 'builder'
-  #   options[:indent] ||= 2
-  #   xml = options[:builder] ||= ::Builder::XmlMarkup.new(indent: options[:indent])
-  #   xml.instruct! :xml, :version=>"1.0", :encoding => "ISO-8859-1"
-  #   xml.level_one do
-  #     xml.tag!(:second_level, 'content')
-  #   end
-  # end
+   # def to_my_xml(options = {})
+   #   require 'builder'
+   #   options[:indent] ||= 2
+   #   xml = options[:builder] ||= ::Builder::XmlMarkup.new(indent: options[:indent])
+   #   xml.instruct! :xml, :version=>"1.0", :encoding => "UTF-8"
+   #   xml.level_one do
+   #     xml.tag!(:second_level, 'content')
+   #   end
+   # end
 
 end

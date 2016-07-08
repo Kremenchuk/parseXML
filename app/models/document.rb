@@ -7,4 +7,8 @@ class Document < ApplicationRecord
   has_many :requisites, through: :document_requisites
 
   belongs_to :commerce_information
+
+  #documents
+  has_many :documents_tax_values
+  has_many :tax, through: :documents_tax_values
 end

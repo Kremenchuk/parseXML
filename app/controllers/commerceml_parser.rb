@@ -50,9 +50,7 @@ module CommercemlParser
     @new_commerce_information.save!
 
     if order_doc.css('Документ')
-      order_doc.css('Документ').each do |order|
-        parse_order(order, @new_commerce_information)
-      end
+      parse_order(order_doc, @new_commerce_information)
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160707083355) do
+ActiveRecord::Schema.define(version: 20160708092422) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -38,16 +38,19 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "only_change"
     t.integer  "owner_id"
     t.integer  "classifier_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "classifiers", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
+    t.string   "only_change"
     t.integer  "owner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "commerce_information_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "commerce_informations", force: :cascade do |t|
@@ -72,16 +75,6 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "id_xml"
     t.string   "name"
     t.string   "role"
-    t.string   "address"
-    t.string   "post_index"
-    t.string   "country"
-    t.string   "region"
-    t.string   "area"
-    t.string   "city"
-    t.string   "street"
-    t.string   "build"
-    t.string   "housing"
-    t.string   "flat"
     t.integer  "personable_id"
     t.string   "personable_type"
     t.datetime "created_at",      null: false
@@ -111,6 +104,7 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "course"
     t.string   "sum"
     t.string   "time"
+    t.string   "payment_term"
     t.string   "comment"
     t.integer  "commerce_information_id"
     t.datetime "created_at",              null: false
@@ -120,7 +114,19 @@ ActiveRecord::Schema.define(version: 20160707083355) do
   create_table "documents_products", force: :cascade do |t|
     t.integer  "document_id"
     t.integer  "product_id"
+    t.string   "price"
     t.string   "quantity"
+    t.string   "sum"
+    t.string   "unit"
+    t.string   "coefficient"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "documents_tax_values", force: :cascade do |t|
+    t.integer  "document_id"
+    t.integer  "tax_id"
+    t.string   "in_total"
     t.string   "sum"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -160,9 +166,9 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "number"
     t.string   "issue_date"
     t.string   "issued_by"
-    t.integer  "physical_persone"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "physical_persone_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "legal_entities", force: :cascade do |t|
@@ -197,6 +203,16 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.datetime "updated_at",              null: false
   end
 
+  create_table "order_tax_values", force: :cascade do |t|
+    t.integer  "product_id"
+    t.integer  "tax_id"
+    t.string   "in_total"
+    t.string   "sum"
+    t.string   "rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "owners", force: :cascade do |t|
     t.string   "id_xml"
     t.string   "name"
@@ -218,12 +234,6 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "okpo"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-  end
-
-  create_table "parse_infos", force: :cascade do |t|
-    t.string   "id_xml"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "payment_accounts", force: :cascade do |t|
@@ -341,6 +351,10 @@ ActiveRecord::Schema.define(version: 20160707083355) do
     t.string   "name"
     t.string   "type_product"
     t.string   "type_nomenclature"
+    t.boolean  "from_erp"
+    t.boolean  "from_site"
+    t.boolean  "to_erp"
+    t.boolean  "to_site"
     t.integer  "catalog_id"
     t.integer  "unit_id"
     t.datetime "created_at",        null: false

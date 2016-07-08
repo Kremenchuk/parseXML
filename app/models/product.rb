@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :unit
-  belongs_to :catalog
+  belongs_to :catalog, optional: true
   has_and_belongs_to_many :groups
 
   #properties
@@ -23,6 +23,11 @@ class Product < ApplicationRecord
   has_many :product_images
   has_and_belongs_to_many :handbooks
 
+  #documents (order)
   has_many :documents_products
   has_many :documents, through: :documents_products
+
+  has_many :order_tax_values
+  has_many :taxes, through: :order_tax_values
+
 end

@@ -10,6 +10,7 @@ class CreateDocuments < ActiveRecord::Migration[5.0]
       t.string :course
       t.string :sum
       t.string :time
+      t.string :payment_term
       t.string :comment
       t.integer :commerce_information_id
       t.timestamps

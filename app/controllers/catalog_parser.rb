@@ -15,70 +15,125 @@ module CatalogParser
     end
     owner.catalogs << @new_catalog
     commerce_information.catalogs << @new_catalog
-
-    parse_product(catalog_doc.css('Товары'))
+    flag = "from_ERP"
+    parse_product(nil, catalog_doc.css('Товары'), flag)
   end
 
 
   #Парсим товары
 
-  def parse_product(product_doc)
+  def parse_product(document, product_doc, flag)
     product_doc.css('Товар').each do |product|
-      @new_product = Product.new
       if product.at_css('Ид')
-        @new_product.id_xml     = product.at_css('Ид').text
+        prod = Product.find_by(id_xml: product.at_css('Ид').text)
+      elsif product.at_css('Артикул')
+        prod = Product.find_by(vendorcode: product.at_css('Артикул').text)
+      elsif product.at_css('Штрихкод')
+        prod = Product.find_by(barcode: product.at_css('Штрихкод').text)
       end
-      if product.at_css('Артикул')
-        @new_product.vendorcode = product.at_css('Артикул').text
-      end
-      if product.at_css('Штрихкод')
-        @new_product.barcode    = product.at_css('Штрихкод').text
-      end
-      if product.at_css('Картинка')
-        product.css('Картинка').count.times do |i|
-          new_image = ProductImage.new
-          new_image.link_image = product.css('Картинка')[i].text
-          @new_product.product_images << new_image
-          new_image.save!
+
+      if prod
+        #товар знайдено у базі
+        if document.class == Document
+          if product.at_css('Налоги')
+            parse_order_tax(prod, product.css('Налоги'))
+          end
+
+          @new_document_product              = DocumentsProduct.new
+          @new_document_product.price        = product.at_css('ЦенаЗаЕдиницу').text
+          @new_document_product.quantity     = product.at_css('Количество').text
+          @new_document_product.sum          = product.at_css('Сумма').text
+          if product.at_css('Единица')
+            @new_document_product.unit         = product.at_css('Единица').text
+          end
+          @new_document_product.coefficient  = product.at_css('Коэффициент').text
+          @new_document_product.product      = prod
+          @new_document_product.document     = document
+          # document.products << @new_document_product
+          # prod.document << @new_document_product
+          @new_document_product.save!
         end
-      end
-      @new_product.name         = product.at_css('Наименование').text
-
-
-      #парсим ед. изм
-        unit = parse_unit(product.at_css('БазоваяЕдиница'))
-        unit.products << @new_product
-
-      if product.css('Группы')
-        product.css('Группы Ид').each do |group|
-          prod_group = Group.find_by(id_xml: group.text)
-          if prod_group
-            @new_product.groups << prod_group
+      else
+        @new_product = Product.new
+        if product.at_css('Ид')
+          @new_product.id_xml     = product.at_css('Ид').text
+        end
+        if product.at_css('Артикул')
+          @new_product.vendorcode = product.at_css('Артикул').text
+        end
+        if product.at_css('Штрихкод')
+          @new_product.barcode    = product.at_css('Штрихкод').text
+        end
+        if product.at_css('Картинка')
+          product.css('Картинка').count.times do |i|
+            new_image = ProductImage.new
+            new_image.link_image = product.css('Картинка')[i].text
+            @new_product.product_images << new_image
+            new_image.save!
           end
         end
+        @new_product.name         = product.at_css('Наименование').text
+
+
+        #парсим ед. изм
+          unit = parse_unit(product.at_css('БазоваяЕдиница'))
+          unit.products << @new_product
+
+        if product.css('Группы')
+          product.css('Группы Ид').each do |group|
+            prod_group = Group.find_by(id_xml: group.text)
+            if prod_group
+              @new_product.groups << prod_group
+            end
+          end
+        end
+        if @new_catalog
+          @new_catalog.products << @new_product
+        end
+
+        #парсим свойства товара
+          if product.at_css('ЗначенияСвойств')
+            parse_product_property(product.css('ЗначенияСвойств'))
+          end
+
+        #парсим СтавкиНалогов товара
+          if product.at_css('СтавкиНалогов')
+            parse_taxes(product.css('СтавкиНалогов'))
+          end
+
+        #парсим Налоги товара (из заказа)
+          if product.at_css('Налоги')
+            parse_order_tax(@new_product, product.css('Налоги'))
+          end
+
+        #парсим ХарактеристикиТовара товара
+          if product.at_css('ХарактеристикиТовара')
+            parse_attributes(product.css('ХарактеристикиТовара'))
+          end
+
+        #парсим ЗначенияРеквизитов товара
+          if product.at_css('ЗначенияРеквизитов')
+            parse_requisite(product.css('ЗначенияРеквизитов'))
+          end
+
+        if document.class == Document
+          if product.at_css('Налоги')
+            parse_order_tax(@new_product, product.css('Налоги'))
+          end
+
+          @new_document_product              = DocumentsProduct.new
+          @new_document_product.price        = product.at_css('ЦенаЗаЕдиницу').text
+          @new_document_product.quantity     = product.at_css('Количество').text
+          @new_document_product.sum          = product.at_css('Сумма').text
+          if product.at_css('Единица')
+            @new_document_product.unit         = product.at_css('Единица').text
+          end
+          @new_document_product.coefficient  = product.at_css('Коэффициент').text
+          @new_document_product.product      = @new_product
+          @new_document_product.document     = document
+          @new_document_product.save!
+        end
       end
-      @new_catalog.products << @new_product
-
-      #парсим свойства товара
-        if product.css('ЗначенияСвойств')
-          parse_product_property(product.css('ЗначенияСвойств'))
-        end
-
-      #парсим СтавкиНалогов товара
-        if product.css('СтавкиНалогов')
-          parse_taxes(product.css('СтавкиНалогов'))
-        end
-
-      #парсим ХарактеристикиТовара товара
-        if product.css('ХарактеристикиТовара')
-          parse_attributes(product.css('ХарактеристикиТовара'))
-        end
-
-      #парсим ЗначенияРеквизитов товара
-        if product.css('ЗначенияРеквизитов')
-          parse_requisite(product.css('ЗначенияРеквизитов'))
-        end
-
 
     end
   end
@@ -115,13 +170,13 @@ module CatalogParser
         new_product_property = ProductProperty.new
         new_product_property.product  = @new_product
         new_product_property.property = prod_property
-        if property.css('Значение')
+        if property.at_css('Значение')
           new_product_property.value  = property.css('Значение').text
         end
         new_product_property.save!
       end
 
-      if property.css('Значение')
+      if property.at_css('Значение')
         property.css('Значение').count.times do |i|
           if property.css('Значение')[i].text != ""
             prod_handbook = Handbook.find_by(id_xml: property.css('Значение')[i].text)
@@ -214,6 +269,33 @@ module CatalogParser
     @new_product_requisite_value.save!
   end
 
+
+
+  def parse_order_tax(product , order_tax_doc)
+    order_tax_doc.css('Налог').each do |order_tax|
+      product_tax = Tax.find_by(name: order_tax.at_css('Наименование').text)
+      if product_tax
+        insert_new_order_tax_value(product, order_tax, product_tax)
+      else
+        @new_tax      = Tax.new
+        @new_tax.name = order_tax.at_css('Наименование').text
+        @new_tax.save!
+        insert_new_order_tax_value(product, order_tax, @new_tax)
+      end
+    end
+  end
+
+  def insert_new_order_tax_value(product, value, tax)
+    @new_order_tax_value          = OrderTaxValue.new
+    @new_order_tax_value.product  = product
+    @new_order_tax_value.tax      = tax
+
+    @new_order_tax_value.in_total = value.at_css('УчтеноВСумме').text
+    @new_order_tax_value.sum      = value.at_css('Сумма').text
+    @new_order_tax_value.rate     = value.at_css('Ставка').text
+
+    @new_order_tax_value.save!
+  end
 
 
 end

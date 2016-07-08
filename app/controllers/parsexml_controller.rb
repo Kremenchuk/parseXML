@@ -18,7 +18,7 @@ class ParsexmlController < ApplicationController
 
   def index
     #parser_product_from_erp
-    parse_order_from_erp
+    #parse_order_from_erp
     create_order_to_erp
   end
 end
