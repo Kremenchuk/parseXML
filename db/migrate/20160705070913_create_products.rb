@@ -5,8 +5,6 @@ class CreateProducts < ActiveRecord::Migration[5.0]
       t.string :barcode      #штрих код
       t.string :vendorcode   #артикул
       t.string :name
-      t.string :type_product
-      t.string :type_nomenclature
       t.boolean :from_erp
       t.boolean :from_site
       t.boolean :to_erp

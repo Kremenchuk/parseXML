@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   belongs_to :unit
+
   belongs_to :catalog, optional: true
+
   has_and_belongs_to_many :groups
 
   #properties
@@ -30,4 +32,6 @@ class Product < ApplicationRecord
   has_many :order_tax_values
   has_many :taxes, through: :order_tax_values
 
+  #discounts
+  has_many :discounts
 end

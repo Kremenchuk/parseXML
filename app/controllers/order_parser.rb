@@ -187,6 +187,9 @@ module OrderParser
       if representative.at_css('АдресРегистрации')
         parse_address(@new_representative, representative.css('АдресРегистрации'))
       end
+      if representative.at_css('Контакты')
+        parse_contact(@new_representative,representative.css('Контакты'))
+      end
       @new_contractor.representatives << @new_representative
     end
   end

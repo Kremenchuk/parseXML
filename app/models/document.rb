@@ -10,5 +10,5 @@ class Document < ApplicationRecord
 
   #documents
   has_many :documents_tax_values
-  has_many :tax, through: :documents_tax_values
+  has_many :taxes, through: :documents_tax_values
 end

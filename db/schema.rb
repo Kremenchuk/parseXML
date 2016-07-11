@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708092422) do
+ActiveRecord::Schema.define(version: 20160711143243) do
 
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
@@ -84,6 +84,16 @@ ActiveRecord::Schema.define(version: 20160708092422) do
   create_table "contractors_documents", id: false, force: :cascade do |t|
     t.integer "contractor_id"
     t.integer "document_id"
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "sum"
+    t.string   "percent"
+    t.string   "in_total"
+    t.integer  "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "document_requisites", force: :cascade do |t|
@@ -349,16 +359,14 @@ ActiveRecord::Schema.define(version: 20160708092422) do
     t.string   "barcode"
     t.string   "vendorcode"
     t.string   "name"
-    t.string   "type_product"
-    t.string   "type_nomenclature"
     t.boolean  "from_erp"
     t.boolean  "from_site"
     t.boolean  "to_erp"
     t.boolean  "to_site"
     t.integer  "catalog_id"
     t.integer  "unit_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "properties", force: :cascade do |t|

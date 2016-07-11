@@ -41,6 +41,7 @@ module CommercemlParser
 
   def parse_order_from_erp()
     file = './data/from_ERP/orders.xml'
+    #file = './data/from_site/from.xml'
     order_doc = Nokogiri::XML(File.open(file))
 
     @new_commerce_information               = CommerceInformation.new
