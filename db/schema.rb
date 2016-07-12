@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20160711143243) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "banks", force: :cascade do |t|
     t.integer  "payment_account_id"
     t.boolean  "corespondent_bank"
@@ -57,6 +60,10 @@ ActiveRecord::Schema.define(version: 20160711143243) do
     t.string   "name_document"
     t.string   "version"
     t.string   "date"
+    t.boolean  "from_erp"
+    t.boolean  "from_site"
+    t.boolean  "to_erp"
+    t.boolean  "to_site"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -360,10 +367,6 @@ ActiveRecord::Schema.define(version: 20160711143243) do
     t.string   "barcode"
     t.string   "vendorcode"
     t.string   "name"
-    t.boolean  "from_erp"
-    t.boolean  "from_site"
-    t.boolean  "to_erp"
-    t.boolean  "to_site"
     t.integer  "catalog_id"
     t.integer  "unit_id"
     t.datetime "created_at", null: false

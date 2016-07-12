@@ -11,6 +11,7 @@ module CommercemlParser
       @new_commerce_information.version       = xml_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
       @new_commerce_information.date          = xml_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
       @new_commerce_information.name_document = "from_ERP_import"
+      @new_commerce_information.from_erp = true
       @new_commerce_information.save!
 
       if xml_doc.css('Классификатор')
@@ -28,6 +29,7 @@ module CommercemlParser
       @new_commerce_information.version       = offers_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
       @new_commerce_information.date          = offers_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
       @new_commerce_information.name_document = "from_ERP_offers"
+      @new_commerce_information.from_erp = true
       @new_commerce_information.save!
 
       if offers_doc.css('ПакетПредложений')
@@ -48,6 +50,7 @@ module CommercemlParser
     @new_commerce_information.version       = order_doc.css('КоммерческаяИнформация')[0]['ВерсияСхемы']
     @new_commerce_information.date          = order_doc.css('КоммерческаяИнформация')[0]['ДатаФормирования']
     @new_commerce_information.name_document = "from_ERP_order"
+    @new_commerce_information.from_erp = true
     @new_commerce_information.save!
 
     if order_doc.css('Документ')
