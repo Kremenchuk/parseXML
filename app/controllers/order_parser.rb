@@ -33,7 +33,7 @@ module OrderParser
         parse_document_tax(@new_document, order.at_css('Налоги'))
       end
       if order.at_css('Товары')
-        parse_product(@new_document, order.css('Товары'), nil)
+        parse_product(@new_document, order.css('Товары'))
       end
 
 
