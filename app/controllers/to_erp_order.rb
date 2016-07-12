@@ -1,17 +1,16 @@
 module ToErpOrder
 
 
-  def create_to_erp_order()
+  def create_to_erp_order(commerce_infor)
 
-    @commerce_infor = CommerceInformation.find_by(name_document: "from_ERP_order")
     @doc = Nokogiri::XML('to.xml')
 
     node_commerce_inf = Nokogiri::XML::Node.new('КоммерческаяИнформация', @doc)
-    node_commerce_inf['ВерсияСхемы'] = @commerce_infor.version
-    node_commerce_inf['ДатаФормирования'] = @commerce_infor.date
+    node_commerce_inf['ВерсияСхемы'] = commerce_infor.version
+    node_commerce_inf['ДатаФормирования'] = commerce_infor.date
     @doc.root = node_commerce_inf
 
-    @commerce_infor.documents.each do |document|
+    commerce_infor.documents.each do |document|
 
       node_document = Nokogiri::XML::Node.new('Документ', @doc)
       node_commerce_inf.add_child node_document
@@ -302,6 +301,7 @@ module ToErpOrder
           node_rate.content = order_tax_value.rate
           node_tax.add_child node_rate
         end
+
       #Скидки для товара
         if product.discounts.count > 0
 
@@ -309,24 +309,29 @@ module ToErpOrder
           node_product.add_child node_discounts
 
           product.discounts.each do |discount|
-            node_discount = Nokogiri::XML::Node.new('Скидка', @doc)
-            node_discounts.add_child node_discount
+            if document.id == discount.document_id
+              node_discount = Nokogiri::XML::Node.new('Скидка', @doc)
+              node_discounts.add_child node_discount
 
-            node_name = Nokogiri::XML::Node.new('Наименование', @doc)
-            node_name.content = discount.name
-            node_discount.add_child node_name
+              node_name = Nokogiri::XML::Node.new('Наименование', @doc)
+              node_name.content = discount.name
+              node_discount.add_child node_name
 
-            node_sum = Nokogiri::XML::Node.new('Сумма', @doc)
-            node_sum.content = discount.name
-            node_discount.add_child node_sum
+              node_sum = Nokogiri::XML::Node.new('Сумма', @doc)
+              node_sum.content = discount.name
+              node_discount.add_child node_sum
 
-            node_percent = Nokogiri::XML::Node.new('Процент', @doc)
-            node_percent.content = discount.percent
-            node_discount.add_child node_percent
+              node_percent = Nokogiri::XML::Node.new('Процент', @doc)
+              node_percent.content = discount.percent
+              node_discount.add_child node_percent
 
-            node_in_total = Nokogiri::XML::Node.new('УчтеноВСумме', @doc)
-            node_in_total.content = discount.in_total
-            node_discount.add_child node_in_total
+              node_in_total = Nokogiri::XML::Node.new('УчтеноВСумме', @doc)
+              node_in_total.content = discount.in_total
+              node_discount.add_child node_in_total
+
+            else
+              node_discounts.remove
+            end
           end
         end
     end

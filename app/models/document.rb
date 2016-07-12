@@ -8,6 +8,8 @@ class Document < ApplicationRecord
 
   belongs_to :commerce_information
 
+  has_many :discounts
+
   #documents
   has_many :documents_tax_values
   has_many :taxes, through: :documents_tax_values

@@ -92,8 +92,9 @@ ActiveRecord::Schema.define(version: 20160711143243) do
     t.string   "percent"
     t.string   "in_total"
     t.integer  "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "document_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "document_requisites", force: :cascade do |t|

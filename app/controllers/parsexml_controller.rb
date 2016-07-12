@@ -9,16 +9,9 @@ class ParsexmlController < ApplicationController
   include OrderParser
   include ToErpOrder
 
-
-
-=begin
-  require '/commerceml/commerceml_creator'
-  require '/commerceml/commerceml_parser'
-=end
-
   def index
-    #parser_product_from_erp
+    parser_product_from_erp
     #parse_order_from_erp
-    create_order_to_erp
+    #create_order_to_erp
   end
 end

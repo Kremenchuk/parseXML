@@ -15,14 +15,13 @@ module CatalogParser
     end
     owner.catalogs << @new_catalog
     commerce_information.catalogs << @new_catalog
-    flag = "from_ERP"
-    parse_product(nil, catalog_doc.css('Товары'), flag)
+    parse_product(nil, catalog_doc.css('Товары'))
   end
 
 
   #Парсим товары
 
-  def parse_product(document, product_doc, flag)
+  def parse_product(document, product_doc)
     product_doc.css('Товар').each do |product|
       if product.at_css('Ид')
         prod = Product.find_by(id_xml: product.at_css('Ид').text)
@@ -62,7 +61,7 @@ module CatalogParser
           # prod.document << @new_document_product
           @new_document_product.save!
 
-          parse_discount(prod, product.css('Скидки'))
+          parse_discount(prod, product.css('Скидки'), document)
         end
       else
         @new_product = Product.new
@@ -144,7 +143,7 @@ module CatalogParser
           @new_document_product.document     = document
           @new_document_product.save!
 
-          parse_discount(@new_product, product.css('Скидки'))
+          parse_discount(@new_product, product.css('Скидки'), document)
 
         end
       end
@@ -155,7 +154,7 @@ module CatalogParser
 
 
 
-  def parse_discount(object, discount_doc)
+  def parse_discount(object, discount_doc, document)
     discount_doc.css('Скидка').each do |discount|
       @new_discount          = Discount.new
       @new_discount.name     = discount.at_css('Наименование').text
@@ -164,6 +163,7 @@ module CatalogParser
       @new_discount.in_total = discount.at_css('УчтеноВСумме').text
 
       object.discounts << @new_discount
+      document.discounts << @new_discount
     end
 
   end
