@@ -1,7 +1,7 @@
 class CreateMagento2Customers < ActiveRecord::Migration[5.0]
   def change
     create_table :magento2_customers do |t|
-      t.string :ID
+      t.string :id_csv
       t.string :name
       t.string :email
       t.string :group

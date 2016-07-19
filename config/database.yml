@@ -34,7 +34,7 @@ default: &default
 development:
   adapter: postgresql
   encoding: unicode
-  database: myapp_development
+  database: commerceMLAPI_development
   host: localhost
   pool: 5
   username: rempg
@@ -42,7 +42,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: myapp_test
+  database: commerceMLAPI_development
   host: localhost
   pool: 5
   username: rempg

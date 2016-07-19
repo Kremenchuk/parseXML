@@ -294,7 +294,7 @@ ActiveRecord::Schema.define(version: 20160714082943) do
   end
 
   create_table "magento2_customers", force: :cascade do |t|
-    t.string   "ID"
+    t.string   "id_csv"
     t.string   "name"
     t.string   "email"
     t.string   "group"
