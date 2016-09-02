@@ -123,7 +123,7 @@ class CartController < ApplicationController
     Magento2::Shipment.shipment(shipment_attr, @token_key)
     attr = {
         "statusHistory": {
-            "status": "rem_status_code",
+            "status": "rem_status_code", # Встановлення статусу ордера
         }
     }
     begin
