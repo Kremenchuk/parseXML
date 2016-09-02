@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 gem 'slim'
+gem 'haml'
 gem 'nokogiri'
 gem 'rest-client'
 gem 'csv-mapper'
+gem 'devise'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

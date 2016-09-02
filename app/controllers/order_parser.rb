@@ -22,9 +22,7 @@ module OrderParser
 
       if order.at_css('ЗначенияРеквизитов')
         Nokogiri::XML::SAX::Parser.new(ParserDocument.new).parse(order.to_xml)
-        #parse_document_requisite(order.css('ЗначенияРеквизитов'))
       end
-
 
       if order.at_css('Контрагенты')
         parse_contractor(order.css('Контрагенты'))
@@ -48,7 +46,10 @@ module OrderParser
       @new_contractor         = Contractor.new
       @new_contractor.id_xml  = contractor.at_css('Ид').text
       @new_contractor.name  = contractor.at_css('Наименование').text
-      @new_contractor.role    = contractor.at_css('Роль').text
+      if contractor.at_css('Роль')
+        @new_contractor.role    = contractor.at_css('Роль').text
+      end
+
       @new_contractor.save!
       @new_document.contractors << @new_contractor
       if contractor.at_css('ПолноеНаименование')
@@ -164,9 +165,15 @@ module OrderParser
     if contact_doc.at_css('Контакт')
       contact_doc.css('Контакт').each do |contact|
         @new_contact              = Contact.new
-        @new_contact.contact_type = contact.at_css('Тип').text
-        @new_contact.value        = contact.at_css('Значение').text
-        @new_contact.comment      = contact.at_css('Комментарий').text
+        if contact.at_css('Тип')
+          @new_contact.contact_type = contact.at_css('Тип').text
+        end
+        if contact.at_css('Значение')
+          @new_contact.value        = contact.at_css('Значение').text
+        end
+        if @new_contact.comment      = contact.at_css('Комментарий').text
+          @new_contact.comment      = contact.at_css('Комментарий').text
+        end
         object.contacts << @new_contact
       end
     end

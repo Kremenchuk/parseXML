@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %title Mini ERP
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .main
+      .wrapper
+        .container
+          .col-md-12
+            #alert_block
+              #success_alert.messages_alert
+                .alert.alert-success
+                  .data_alert
+              #warning_alert.messages_alert
+                .alert.alert-warning
+                  .data_alert
+              #error_alert.messages_alert
+                .alert.alert-danger
+                  .data_alert
+        =yield
+        .boofer
+    .footer
+
+
+

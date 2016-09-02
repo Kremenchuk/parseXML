@@ -1,0 +1,12 @@
+%h1 Parse
+%p
+  =link_to "Create cart", create_cart_path
+%p
+  =link_to "Create product", add_product_path
+%p
+  =link_to "Update product", update_product_path
+%p
+  =form_tag get_product_path, :method => :get
+  =label_tag "new_rem_product1", "new_rem_product1"
+  =text_field_tag "sku", "new_rem_product1"
+  =submit_tag
